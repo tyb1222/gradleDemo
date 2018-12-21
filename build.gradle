@@ -1,0 +1,98 @@
+plugins {
+    id 'java'
+}
+
+
+group 'com.tyb'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    // https://mvnrepository.com/artifact/org.springframework/spring-core
+    compile group: 'org.springframework', name: 'spring-core', version: '5.1.1.RELEASE'
+    compile group: 'org.springframework', name: 'spring-context', version: '5.1.1.RELEASE'
+    compile group: 'org.springframework', name: 'spring-bean', version: '5.1.1.RELEASE'
+    compile group: 'org.springframework', name: 'spring-webmvc', version: '5.1.1.RELEASE'
+    compile group: 'org.springframework', name: 'spring-web', version: '5.1.1.RELEASE'
+    compile group: 'org.springframework', name: 'spring-tx', version: '5.1.1.RELEASE'
+    // https://mvnrepository.com/artifact/org.mybatis/mybatis
+    compile group: 'org.mybatis', name: 'mybatis', version: '3.4.5'
+    // https://mvnrepository.com/artifact/mysql/mysql-connector-java
+    compile group: 'mysql', name: 'mysql-connector-java', version: '6.0.5'
+    // https://mvnrepository.com/artifact/c3p0/c3p0
+    compile group: 'c3p0', name: 'c3p0', version: '0.9.1.1'
+    // https://mvnrepository.com/artifact/org.mybatis/mybatis-spring
+    compile group: 'org.mybatis', name: 'mybatis-spring', version: '1.3.0'
+
+}
+task"create-dirs" << {
+
+    sourceSets*.java.srcDirs*.each { it.mkdirs() }
+
+    sourceSets*.resources.srcDirs*.each { it.mkdirs() }
+
+}
+
+task hello{
+    doLast {
+        println 'Hello world!'
+        println name
+    }
+}
+
+task hello1 <<{
+    println "hello1"
+}
+
+task upper <<{
+    String someString = 'mY_nAmE'
+    println "Original: " + someString
+    println "Upper case: " + someString.toUpperCase()
+
+}
+
+task intro(dependsOn:'n'){
+    println "intro task"
+}
+
+task n<<{
+    println "task n"
+}
+
+4.times { counter ->
+    task "task$counter" << {
+        println "I'm task number $counter"
+    }
+}
+task0.dependsOn task2, task3
+
+
+hello1.doFirst {
+    println 'Hello Earth'
+}
+hello1.doLast {
+    println  "Hello Mars $hello1.name task "
+//    println "Greetings from the hello1.name task."
+    println "Greetings from the $hello1.name task."
+}
+hello1 <<{
+    println "what"
+}
+task copyJars(type: Copy) {
+    from configurations
+    into 'lib' // 目标位置
+}
+
+uploadArchives {
+    repositories {
+        flatDir {
+            dirs 'repos'
+        }
+    }
+}
