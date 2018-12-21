@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.ContextLoaderListener;
 
 @Controller
+@RequestMapping("/index")
 public class IndexController {
 
     @RequestMapping("/hello")
